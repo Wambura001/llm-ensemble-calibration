@@ -7,7 +7,38 @@ Standard LLMs frequently suffer from calibration errors, expressing 100% verbali
 
 Instead of trusting a single model's self-evaluation (which is inherently biased), a target query is routed to three distinct architectural models simultaneously. By measuring the semantic variance and mathematical disagreement among the independent outputs, our system accurately measures internal uncertainty and dampens false confidence.
 
-┌─────────────────┐│   User Query    │└────────┬────────┘│┌─────────────────┼─────────────────┐▼                 ▼                 ▼┌─────────────┐   ┌─────────────┐   ┌─────────────┐│   Model A   │   │   Model B   │   │   Model C   ││ (e.g. Llama)│   │(e.g. Mistral)│  │ (e.g. Phi)  │└──────┬──────┘   └──────┬──────┘   └──────┬──────┘│                 │                 │└─────────────────┼─────────────────┘▼┌───────────────────────────────┐│   Semantic Consensus Engine   ││   (Measures Text Variance)   │└──────────────┬────────────────┘│▼┌───────────────────────────────┐│ Calibrated Output Generation  ││  (Answer + Real Confidence)   │└───────────────────────────────┘
+                  +-----------------+
+
+                  |   User Query    |
+                  +--------+--------+
+                           |
+         +-----------------+-----------------+
+
+         |                 |                 |
+         v                 v                 v
+  +-------------+   +-------------+   +-------------+
+
+  |   Model A   |   |   Model B   |   |   Model C   |
+  | (Llama 3.2) |   |  (Phi 3.3)  |   | (Gemma 2)   |
+  +------+------+   +------+------+   +------+------+
+
+         |                 |                 |
+         +-----------------+-----------------+
+                           |
+                           v
+            +-------------------------------+
+
+            |   Semantic Consensus Engine   |
+            |    (Measures Text Variance)   |
+            +--------------+----------------+
+                           |
+                           v
+            +-------------------------------+
+
+            | Calibrated Output Generation  |
+            |   (Answer + Real Confidence)  |
+            +-------------------------------+
+
 
 ## System Architecture & Mechanics
 1. **Parallel Querying:** The orchestrator dispatches the input prompt to three open-weight foundational models (e.g., Llama 3, Mistral, Phi-3).
