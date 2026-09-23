@@ -2,6 +2,9 @@
 
 An advanced inference-time system architecture designed to detect and correct Large Language Model (LLM) overconfidence. This system uses multi-model consensus checking to calculate a statistical calibration score before delivering answers to users.
 
+![image](assets/img1.png)
+![image](assets/img2.png)
+
 ## Project Overview
 Standard LLMs frequently suffer from calibration errors, expressing 100% verbalized confidence in completely incorrect answers. This project implements an **Inference-Time Cross-Model Ensemble Disagreement Pipeline**. 
 
